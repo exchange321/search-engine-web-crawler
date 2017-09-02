@@ -1,0 +1,22 @@
+version: 0.2
+
+env:
+  variables:
+    NODE_ENV: "production"
+
+phases:
+  install:
+    commands:
+      - 'sudo apt-get update'
+      - 'sudo docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+  build:
+    commands:
+      - 'sudo npm run build'
+  post_build:
+    commands:
+      - 'sudo docker build -t exchange321/accese-web-crawler:latest -f .docker/Dockerfile .'
+      - 'sudo docker push exchange321/accese-web-crawler:latest'
+artifacts:
+  files:
+    - 'appspec.yml'
+    - 'deploy.sh'
