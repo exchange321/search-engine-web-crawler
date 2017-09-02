@@ -58,6 +58,7 @@ function crawlerFunc() {
       const page = data.toString();
       const $ = cheerio.load(page);
       const content = {};
+      content.info = provider;
       content.url = queueItem.url;
       content.title = $('meta[name*=title]').attr('content') || $('title').text() || '';
       content.description = $('meta[name*=description]').attr('content') || '';
