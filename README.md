@@ -7,11 +7,11 @@ The web crawler component of the accessible search engine for people with intell
 Developing
 
 ## To-Dos
-- [x] Initialize development environment
-- [ ] Crawl single page content
-- [ ] Crawl single site content
-- [ ] Store crawled info
-- [ ] Read URL from excel
-- [ ] Deployment
+- [x] Deployment
 
 ## Completed
+- [x] Initialize development environment
+- [x] Crawl single page content
+- [x] Crawl single site content
+- [x] Store crawled info
+- [x] Read URL from excel
