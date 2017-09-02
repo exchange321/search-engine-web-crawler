@@ -54,27 +54,31 @@ function crawlerFunc() {
     });
 
     crawler.on("fetchcomplete", function(queueItem, data) {
-      console.log((`${++counter}. ${queueItem.url}`).yellow);
-      const page = data.toString();
-      const $ = cheerio.load(page);
-      const content = {};
-      content.info = provider;
-      content.url = queueItem.url;
-      content.title = $('meta[name*=title]').attr('content') || $('title').text() || '';
-      content.description = $('meta[name*=description]').attr('content') || '';
-      content.image = $('meta[name*=image]').attr('content') || '';
-      $('head').remove();
-      $('body').find('.header, .footer, .Header, .Footer, header, footer, script, style, form,' +
-        ' ul[class*=nav], ul[class*=menu], nav').remove();
-      content.body = he.decode(striptags($.root().html()).replace(/([\n\r]+|(\s\s+))/g, ' '));
-      const next = this.wait();
-      mongodb.connect(mongoUrl, function(err, db) {
-        assert.equal(null, err);
-        insertPage(db, content, function() {
-          db.close();
-          next();
+      if (!queueItem.stateData.headers['x-frame-options']
+        || (queueItem.stateData.headers['x-frame-options'].toLowerCase() !== 'sameorigin'
+        && queueItem.stateData.headers['x-frame-options'].toLowerCase() !== 'deny')) {
+        console.log((`${++counter}. ${queueItem.url}`).yellow);
+        const page = data.toString();
+        const $ = cheerio.load(page);
+        const content = {};
+        content.info = provider;
+        content.url = queueItem.url;
+        content.title = $('meta[name*=title]').attr('content') || $('title').text() || '';
+        content.description = $('meta[name*=description]').attr('content') || '';
+        content.image = $('meta[name*=image]').attr('content') || '';
+        $('head').remove();
+        $('body').find('.header, .footer, .Header, .Footer, header, footer, script, style, form,' +
+          ' ul[class*=nav], ul[class*=menu], nav').remove();
+        content.body = he.decode(striptags($.root().html()).replace(/([\n\r]+|(\s\s+))/g, ' '));
+        const next = this.wait();
+        mongodb.connect(mongoUrl, function(err, db) {
+          assert.equal(null, err);
+          insertPage(db, content, function() {
+            db.close();
+            next();
+          });
         });
-      });
+      }
     });
 
     crawler.on("complete", function() {
