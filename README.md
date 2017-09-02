@@ -4,10 +4,9 @@
 The web crawler component of the accessible search engine for people with intellectual disabilities
 
 ## Status
-Developing
+Testing
 
 ## To-Dos
-- [x] Deployment
 
 ## Completed
 - [x] Initialize development environment
@@ -15,3 +14,4 @@ Developing
 - [x] Crawl single site content
 - [x] Store crawled info
 - [x] Read URL from excel
+- [x] Deployment
