@@ -45,7 +45,7 @@ function crawlerFunc() {
     }
     const crawler = new Crawler(url);
 
-    crawler.maxDepth = 2;
+    crawler.maxDepth = 20;
     crawler.parseHTMLComments = false;
     crawler.downloadUnsupported = false;
 
@@ -81,7 +81,7 @@ function crawlerFunc() {
     });
 
     crawler.on("complete", function() {
-      if (pointer < 2) {
+      if (pointer < providers.length) {
         crawlerFunc();
       } else {
         console.log('Finished!'.green);
