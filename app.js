@@ -48,6 +48,7 @@ function crawlerFunc() {
     crawler.maxDepth = 20;
     crawler.parseHTMLComments = false;
     crawler.downloadUnsupported = false;
+    crawler.stripQuerystring = true;
 
     const conditionID = crawler.addDownloadCondition(function (queueItem, response, callback) {
       callback(null, queueItem.stateData.contentType.indexOf('text/html') > -1 );
