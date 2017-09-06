@@ -37,7 +37,7 @@ let counter = 0;
 function crawlerFunc() {
   const provider = providers[pointer++];
   let url = provider[header[websiteIndex]];
-  if (!url || url.length < 4) {
+  if (!url || url.length < 5) {
     crawlerFunc();
   } else {
     if (!url.match(/^[a-zA-Z]+:\/\//)) {
@@ -45,7 +45,7 @@ function crawlerFunc() {
     }
     const crawler = new Crawler(url);
 
-    crawler.maxDepth = 20;
+    crawler.maxDepth = 5;
     crawler.parseHTMLComments = false;
     crawler.downloadUnsupported = false;
     crawler.stripQuerystring = true;
