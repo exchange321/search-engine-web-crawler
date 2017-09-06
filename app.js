@@ -51,7 +51,7 @@ function crawlerFunc() {
     crawler.stripQuerystring = true;
 
     const conditionID = crawler.addDownloadCondition(function (queueItem, response, callback) {
-      callback(null, queueItem.stateData.contentType.indexOf('text/html') > -1 );
+      callback(null, queueItem.stateData.contentType && queueItem.stateData.contentType.indexOf('text/html') > -1 );
     });
 
     crawler.on("fetchcomplete", function(queueItem, data) {
