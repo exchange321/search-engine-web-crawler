@@ -34,11 +34,11 @@ let websiteIndex = -1;
 let pointer = 0;
 let counter = 0;
 
-function crawlerFunc() {
+function crawlerFunc(db) {
     const provider = providers[pointer++];
     let url = provider[header[websiteIndex]];
     if (!url || url.length < 5) {
-        crawlerFunc();
+        crawlerFunc(db);
     } else {
         if (!url.match(/^[a-zA-Z]+:\/\//)) {
             url = 'http://' + url;
@@ -72,19 +72,16 @@ function crawlerFunc() {
                 ' ul[class*=nav], ul[class*=menu], nav').remove();
             content.body = he.decode(striptags($.root().html()).replace(/([\n\r]+|(\s\s+))/g, ' '));
             const next = this.wait();
-            mongodb.connect(mongoUrl, function(err, db) {
-                assert.equal(null, err);
-                insertPage(db, content, function() {
-                    db.close();
-                    next();
-                });
+            insertPage(db, content, function() {
+                next();
             });
         });
 
         crawler.on("complete", function() {
             if (pointer < providers.length) {
-                crawlerFunc();
+                crawlerFunc(db);
             } else {
+                db.close();
                 console.log('Finished!'.green);
             }
         });
@@ -119,8 +116,10 @@ function execute() {
                 providers.push(provider);
             }
         }
-
-        crawlerFunc();
+        mongodb.connect(mongoUrl, function(err, db) {
+          assert.equal(null, err);
+          crawlerFunc(db);
+        });
     });
 }
 
