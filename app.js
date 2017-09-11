@@ -72,7 +72,8 @@ function crawlerFunc(db) {
                 ' ul[class*=nav], ul[class*=menu], nav').remove();
             content.body = he.decode(striptags($.root().html()).replace(/([\n\r]+|(\s\s+))/g, ' '));
             const next = this.wait();
-            insertPage(db, content, function() {
+            insertPage(db, content, function(err) {
+              assert.equal(null, err);
                 next();
             });
         });
