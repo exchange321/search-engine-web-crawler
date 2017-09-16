@@ -79,7 +79,7 @@ function crawlerFunc() {
         (queueItem.stateData.headers['x-frame-options'].toLowerCase() !== 'sameorigin' &&
           queueItem.stateData.headers['x-frame-options'].toLowerCase() !== 'deny');
       content.url = queueItem.url;
-      content.title = $('meta[name*=title]').attr('content') || $('title').text() || '';
+      content.title = content.autocompletion = $('meta[name*=title]').attr('content') || $('title').text() || '';
       content.description = $('meta[name*=description]').attr('content') || '';
       content.image = $('meta[name*=image]').attr('content') || '';
       $('head').remove();
